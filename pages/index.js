@@ -2,7 +2,7 @@ import faunadb from "faunadb";
 import { useEffect, useState } from "react";
 
 // faunaDB secret Key
-const FAUNA_DB_SECRET = "fnAEAKQ_T0ACCL0uncMNsyKVos0J9krJyYNDOBxm";
+const FAUNA_DB_SECRET = "***REMOVED***";
 
 const client = new faunadb.Client({
   secret: FAUNA_DB_SECRET,
@@ -14,9 +14,6 @@ export default function Home({ streaks, ranks }) {
   const [page, setPage] = useState(1);
   const [sizePerPage, setSizePerPage] = useState(10);
   const [searchUserName, setSearchUserName] = useState(null);
-
-  useEffect(() => console.log(searchUserName), [searchUserName]);
-
   const [dataLength, setDataLength] = useState(streaks.length);
 
   const renderRow = (data) => {
@@ -67,9 +64,9 @@ export default function Home({ streaks, ranks }) {
             height="1rem"
           >
             <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
             />
           </svg>
@@ -117,7 +114,7 @@ export default function Home({ streaks, ranks }) {
                       .map(renderRow)}
                 </tbody>
                 <tfoot className="bg-gray-50">
-                  <td colspan="2" className="px-6 py-3 text-right">
+                  <td colSpan="2" className="px-6 py-3 text-right">
                     Pages
                   </td>
                   <td className="px-6 py-3 flex flex-row justify-center items-center">
@@ -150,9 +147,9 @@ export default function Home({ streaks, ranks }) {
                         onClick={() => setPage(page + 1)}
                       >
                         <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
                           d="M14 5l7 7m0 0l-7 7m7-7H3"
                         />
                       </svg>
@@ -169,31 +166,26 @@ export default function Home({ streaks, ranks }) {
 }
 
 export async function getStaticProps(context) {
-  let ranks = {};
   let response = await client
     .query(
       q.Map(
-        q.Paginate(q.Match(q.Index("streaks_sort_by_count"))),
+        q.Paginate(q.Match(q.Index("streaks_sort_by_count")), { size: 10000 }),
         q.Lambda(["count", "streakRef"], q.Get(q.Var("streakRef")))
       )
     )
     .then((response) =>
-      response.data.map(({ data }, index) => {
-        ranks[data.user_id] = index + 1;
-        return {
-          count: data.count,
-          updated_at: data.updated_at.value,
-          user_id: data.user_id,
-          username: data.username,
-          rank: index + 1,
-        };
-      })
+      response.data.map(({ data }, index) => ({
+        count: data.count,
+        updated_at: data.updated_at.value,
+        user_id: data.user_id,
+        username: data.username,
+        rank: index + 1,
+      }))
     );
 
   return {
     props: {
       streaks: response,
-      ranks: ranks,
     }, // will be passed to the page component as props
   };
 }
