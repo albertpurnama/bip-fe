@@ -18,7 +18,7 @@ export default function Home({ streaks, ranks }) {
 
   const renderRow = (data) => {
     return (
-      <tr className="flex-row">
+      <tr key={data.user_id} className="flex-row">
         <td className="px-6 py-4 whitespace-nowrap w-1/5">{data.rank}</td>
         <td className="px-6 py-4 whitespace-nowrap hover:text-blue-700">
           <a href={`https://twitter.com/${data.username}`} target="_blank">
