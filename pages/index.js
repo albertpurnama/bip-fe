@@ -1,5 +1,7 @@
 import faunadb from "faunadb";
+import Head from 'next/head';
 import { useEffect, useState } from "react";
+
 
 // faunaDB secret Key
 const FAUNA_DB_SECRET = "***REMOVED***";
@@ -10,6 +12,7 @@ const client = new faunadb.Client({
 const q = faunadb.query;
 
 export default function Home({ streaks, ranks }) {
+
   const emotions = ["💪 🔥", "🔥"];
   const [page, setPage] = useState(1);
   const [sizePerPage, setSizePerPage] = useState(10);
@@ -34,6 +37,9 @@ export default function Home({ streaks, ranks }) {
 
   return (
     <div className="max-w-4xl mx-auto p-5">
+      <Head>
+        <script async defer data-domain="https://bipleaderboard.netlify.app" src="https://analytics.apurn.com/js/plausible.js"></script>
+      </Head>
       <h1 className="text-4xl py-6 font-medium">#BuildInPublic Leaderboard</h1>
 
       <div className="subtitle mb-6">
