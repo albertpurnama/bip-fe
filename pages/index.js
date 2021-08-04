@@ -38,7 +38,7 @@ export default function Home({ streaks, ranks }) {
   return (
     <div className="max-w-4xl mx-auto p-5">
       <Head>
-        <script async defer data-domain="https://bipleaderboard.netlify.app" src="https://analytics.apurn.com/js/plausible.js"></script>
+        <script async defer data-domain="bipleaderboard.netlify.app" src="https://analytics.apurn.com/js/plausible.js"></script>
       </Head>
       <h1 className="text-4xl py-6 font-medium">#BuildInPublic Leaderboard</h1>
 
