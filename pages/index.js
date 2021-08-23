@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 
 // faunaDB secret Key
-const FAUNA_DB_SECRET = "***REMOVED***";
+const FAUNA_DB_SECRET = process.env.FAUNA_DB_SECRET;
 
 const client = new faunadb.Client({
   secret: FAUNA_DB_SECRET,
